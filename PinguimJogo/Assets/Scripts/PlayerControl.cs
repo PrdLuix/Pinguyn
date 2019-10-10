@@ -10,6 +10,7 @@ public class PlayerControl : MonoBehaviour
     private Transform tr;
     public Transform verificaChao;
     public bool estaNoChao;
+    public bool estaPulando;
     public int maxJump = 2;
     bool jumping;
     public float forcaPulo;
@@ -53,8 +54,6 @@ public class PlayerControl : MonoBehaviour
         {
             Flip();
         }
-        
-        
         Tiro();
         if (estaNoChao)
         {
@@ -68,12 +67,7 @@ public class PlayerControl : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (Input.GetButtonDown("Jump")&& maxJump > 0)
-        {
             Jump();
-            maxJump--;
-        }
-        
         Movimentacao();
     }
     void Tiro()
@@ -91,17 +85,18 @@ public class PlayerControl : MonoBehaviour
         uiManager.PerderVidas(vidas);
     }
     void Jump()
-    { 
-        if (estaNoChao)
+    {
+        if (Input.GetButtonDown("Jump") && estaNoChao)
         {
-            rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(tr.up * forcaPulo);
-            jumping = true;
+            estaPulando = true;
+            estaNoChao = false;
         }
-        else if(jumping)
+        else if (Input.GetButtonDown("Jump") && estaPulando)
         {
-            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.velocity = new Vector2(rb.velocity.x, 0f);
             rb.AddForce(tr.up * forcaPulo);
+            estaPulando = false;
         }
     }
     void Movimentacao()
@@ -132,5 +127,4 @@ public class PlayerControl : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(verificaChao.position, raioVchao);
     }
-
 }

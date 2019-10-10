@@ -5,8 +5,16 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    bool isPause;
     public Text vidaText;
-
+    void Pause()
+    {
+        Time.timeScale = 0;
+    }
+    void UnPause()
+    {
+        Time.timeScale = 1;
+    }
     public void PerderVidas(int vidas)
     {
 
@@ -15,11 +23,23 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-
+        isPause = false;
     }
-
-    // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPause = !isPause;
+
+            if (isPause)
+            {
+                Pause();
+            }
+            else
+            {
+                UnPause();
+            }
+        }
     }
 }

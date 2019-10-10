@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2537990799842433899}
   - component: {fileID: 7682774698574316037}
   - component: {fileID: 8697868354711850833}
+  - component: {fileID: 7128844621819752244}
   m_Layer: 0
   m_Name: Bola
   m_TagString: Untagged
@@ -68,11 +69,12 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7da00318a1e553847938b108912156ba, type: 3}
-  m_Color: {r: 0.62352943, g: 0, b: 0.20784315, a: 1}
+  m_SortingLayerID: 1930190605
+  m_SortingLayer: 2
+  m_SortingOrder: 3
+  m_Sprite: {fileID: -6662422053269063994, guid: 2b0227a0344e97e4e90ad5b116af4604,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -111,3 +113,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forcaDoTiro: 500
+--- !u!95 &7128844621819752244
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6427084846819075940}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd97c9ae4d3a0ed4d9b1d6e6b5ce0183, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

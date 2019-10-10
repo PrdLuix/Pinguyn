@@ -7,16 +7,33 @@ public class Inimigo : MonoBehaviour
     [SerializeField] float velocidade;
     Transform player;
     Rigidbody2D rb;
+    [SerializeField] bool turnRight;
+    private Transform tr;
     // Start is called before the first frame update
     void Start()
     {
+        turnRight = false;
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player").GetComponent<Transform>();
+        tr = GetComponent<Transform>();
     }
-
-    // Update is called once per frame
+    void Flip()
+    {
+        turnRight = !turnRight;
+        tr.localScale = new Vector2(-tr.localScale.x, tr.localScale.y);
+    }
+    
     void Update()
-    {    
+    {
+        if ((transform.position.x < player.transform.position.x) && turnRight == false)
+        {
+            Flip();
+        }
+        else if(transform.position.x > player.transform.position.x && turnRight)
+        {
+            Flip();
+        }
+
         if (transform.position.x < player.transform.position.x && velocidade < 0)
         {
             velocidade *= -1;
