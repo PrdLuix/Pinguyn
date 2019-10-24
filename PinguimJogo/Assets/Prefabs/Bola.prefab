@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7128844621819752244}
   m_Layer: 0
   m_Name: Bola
-  m_TagString: Untagged
+  m_TagString: Tiro
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 1930190605
   m_SortingLayer: 2
   m_SortingOrder: 3
-  m_Sprite: {fileID: -6662422053269063994, guid: 2b0227a0344e97e4e90ad5b116af4604,
+  m_Sprite: {fileID: 5218351066655645213, guid: 0adcf4f5cda89da49acbbf419d18102c,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -94,12 +94,12 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.50000006
+  m_Radius: 0.77
 --- !u!114 &8697868354711850833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d373507a6c159f146ada9bcf4f08f4a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forcaDoTiro: 500
+  direcaoDoTiro: 0
 --- !u!95 &7128844621819752244
 Animator:
   serializedVersion: 3
@@ -123,7 +123,7 @@ Animator:
   m_GameObject: {fileID: 6427084846819075940}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bd97c9ae4d3a0ed4d9b1d6e6b5ce0183, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

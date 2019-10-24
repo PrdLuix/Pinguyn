@@ -26,12 +26,12 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] GameObject bolas;
     [SerializeField] int quantBolas;
 
-    [SerializeField] bool turnRight;
+    //[SerializeField] bool turnRight;
 
-    
+    public bool TurnRight { get; set; }
     void Start()
     {
-        turnRight = true;
+        TurnRight = true;
         quantBolas = 0;
         vidas = 3;
         rb = GetComponent<Rigidbody2D>();
@@ -46,11 +46,11 @@ public class PlayerControl : MonoBehaviour
 #endif
         Vector3 theScale = transform.localScale;
         estaNoChao = Physics2D.OverlapCircle(verificaChao.position, raioVchao, solido);
-        if ((movimento < 0 ||variableJoystick.Horizontal < 0)&&turnRight)
+        if ((movimento < 0 ||variableJoystick.Horizontal < 0)&&TurnRight)
         {
             Flip();
         }
-        else if((movimento > 0 || variableJoystick.Horizontal > 0) && turnRight == false)
+        else if((movimento > 0 || variableJoystick.Horizontal > 0) && TurnRight == false)
         {
             Flip();
         }
@@ -62,7 +62,7 @@ public class PlayerControl : MonoBehaviour
     }
     void Flip()
     {
-        turnRight = !turnRight;
+        TurnRight = !TurnRight;
         tr.localScale = new Vector2(-tr.localScale.x, tr.localScale.y);
     }
     private void FixedUpdate()
@@ -75,7 +75,7 @@ public class PlayerControl : MonoBehaviour
 
         if (quantBolas > 0 && Input.GetKeyDown(KeyCode.C))
         {
-            Instantiate(bolas, transform.position,transform.rotation);
+            Instantiate(bolas, transform.position, transform.rotation);
             quantBolas--;
         }
     }

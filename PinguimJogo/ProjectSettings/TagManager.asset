@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Coletavel
   - Inimigo
+  - Tiro
   layers:
   - Default
   - TransparentFX
