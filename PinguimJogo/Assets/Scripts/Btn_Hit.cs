@@ -29,8 +29,8 @@ public class Btn_Hit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        OverSound();
-        ClickSound();
+        //OverSound();
+        //ClickSound();
     }
     public void OnSelect(BaseEventData eventData)
     {
