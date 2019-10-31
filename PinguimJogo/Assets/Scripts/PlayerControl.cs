@@ -17,6 +17,8 @@ public class PlayerControl : MonoBehaviour
     public float raioVchao;
     public LayerMask solido;
     public VariableJoystick variableJoystick;
+    PlayerAnimator player;
+    Animator animPlayer;
 
     [SerializeField] float velocidade;
     float movimento;
@@ -31,15 +33,29 @@ public class PlayerControl : MonoBehaviour
     public bool TurnRight { get; set; }
     void Start()
     {
+        animPlayer = this.GetComponent<Animator>();
         TurnRight = true;
         quantBolas = 0;
         vidas = 3;
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<Transform>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        player = GetComponent<PlayerAnimator>();
     }
-
-    // Update is called once per frame
+    void Animacao()
+    {
+        animPlayer.SetBool("Walk", (movimento != 0 || variableJoystick.Horizontal != 0? true: false));
+        animPlayer.SetBool("Idle", !(movimento != 0 || variableJoystick.Horizontal != 0 ? true : false));
+        animPlayer.SetBool("Death", vidas <= 0 ? true : false);
+        //if (movimento != 0 || variableJoystick.Horizontal != 0)
+        //{
+        //    player.Walk();
+        //}
+        //else
+        //{
+        //    player.Idle();
+        //}
+    }
     void Update()
     {
 #if UNITY_STANDALONE
@@ -59,6 +75,9 @@ public class PlayerControl : MonoBehaviour
         {
             maxJump = 2;
         }
+        uiManager.VidasUpdate(vidas);
+        uiManager.NeveUpdate(quantBolas);
+        Animacao();
     }
     void Flip()
     {
@@ -67,7 +86,7 @@ public class PlayerControl : MonoBehaviour
     }
     private void FixedUpdate()
     {
-            Jump();
+        Jump();
         Movimentacao();
     }
     void Tiro()
@@ -81,8 +100,7 @@ public class PlayerControl : MonoBehaviour
     }
     public void PerderVida()
     {
-        vidas--;
-        uiManager.PerderVidas(vidas);
+        vidas--; 
     }
     void Jump()
     {

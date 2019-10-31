@@ -7,6 +7,7 @@ public class Inimigo : MonoBehaviour
     [SerializeField] float velocidade;
     Transform player;
     Rigidbody2D rb;
+    Animator anim;
     [SerializeField] bool turnRight;
     private Transform tr;
     public bool acordado;
@@ -20,6 +21,7 @@ public class Inimigo : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player").GetComponent<Transform>();
         tr = GetComponent<Transform>();
+        anim = GetComponent<Animator>();
     }
     void Flip()
     {
@@ -47,7 +49,14 @@ public class Inimigo : MonoBehaviour
                 velocidade *= -1;
             }
         }
-        //se desacordado mudar animação
+        if (acordado)
+        {
+            anim.SetBool("Desmaiada", false);
+        }
+        else
+        {
+            anim.SetBool("Desmaiada", true);
+        }
 
     }
     private void FixedUpdate()
