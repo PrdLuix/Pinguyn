@@ -17,6 +17,8 @@ public class PlayerControl : MonoBehaviour
     public float raioVchao;
     public LayerMask solido;
     public VariableJoystick variableJoystick;
+    PlayerAnimator player;
+    Animator animPlayer;
 
     [SerializeField] float velocidade;
     float movimento;
@@ -25,32 +27,47 @@ public class PlayerControl : MonoBehaviour
     UIManager uiManager;
     [SerializeField] GameObject bolas;
     [SerializeField] int quantBolas;
-
-    [SerializeField] bool turnRight;
-
-    
+    public GameObject gameOverScreen;
+    //[SerializeField] bool turnRight;
+    public bool vivo;
+    public bool TurnRight { get; set; }
     void Start()
     {
-        turnRight = true;
+        vivo = true;
+        animPlayer = this.GetComponent<Animator>();
+        TurnRight = true;
         quantBolas = 0;
         vidas = 3;
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<Transform>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        player = GetComponent<PlayerAnimator>();
     }
-
-    // Update is called once per frame
+    void Animacao()
+    {
+        animPlayer.SetBool("Walk", (movimento != 0 || variableJoystick.Horizontal != 0? true: false));
+        animPlayer.SetBool("Idle", !(movimento != 0 || variableJoystick.Horizontal != 0 ? true : false));
+        animPlayer.SetBool("Death", vidas <= 0 ? true : false);
+        //if (movimento != 0 || variableJoystick.Horizontal != 0)
+        //{
+        //    player.Walk();
+        //}
+        //else
+        //{
+        //    player.Idle();
+        //}
+    }
     void Update()
     {
 #if UNITY_STANDALONE
 #endif
         Vector3 theScale = transform.localScale;
         estaNoChao = Physics2D.OverlapCircle(verificaChao.position, raioVchao, solido);
-        if ((movimento < 0 ||variableJoystick.Horizontal < 0)&&turnRight)
+        if ((movimento < 0 ||variableJoystick.Horizontal < 0)&&TurnRight)
         {
             Flip();
         }
-        else if((movimento > 0 || variableJoystick.Horizontal > 0) && turnRight == false)
+        else if((movimento > 0 || variableJoystick.Horizontal > 0) && TurnRight == false)
         {
             Flip();
         }
@@ -59,15 +76,24 @@ public class PlayerControl : MonoBehaviour
         {
             maxJump = 2;
         }
+        uiManager.VidasUpdate(vidas);
+        uiManager.NeveUpdate(quantBolas);
+        Animacao();
+        if(transform.position.y < -10)
+        {
+            gameOverScreen.SetActive(true);
+            vivo = false;
+            Destroy(this.gameObject);
+        }
     }
     void Flip()
     {
-        turnRight = !turnRight;
+        TurnRight = !TurnRight;
         tr.localScale = new Vector2(-tr.localScale.x, tr.localScale.y);
     }
     private void FixedUpdate()
     {
-            Jump();
+        Jump();
         Movimentacao();
     }
     void Tiro()
@@ -75,14 +101,13 @@ public class PlayerControl : MonoBehaviour
 
         if (quantBolas > 0 && Input.GetKeyDown(KeyCode.C))
         {
-            Instantiate(bolas, transform.position,transform.rotation);
+            Instantiate(bolas, transform.position, transform.rotation);
             quantBolas--;
         }
     }
     public void PerderVida()
     {
-        vidas--;
-        uiManager.PerderVidas(vidas);
+        vidas--; 
     }
     void Jump()
     {
