@@ -6,17 +6,14 @@ using UnityEngine.EventSystems;
 
 public class Btn_Hit : MonoBehaviour
 {
-    public AudioSource myFX;
     public AudioClip overFX;
     public AudioClip clickFX;
-    [SerializeField]int id;
+    private AudioSource myFX;
 
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-
+        DontDestroyOnLoad(this.gameObject);
+        myFX = GetComponent<AudioSource>();
     }
     public void OverSound()
     {
@@ -26,22 +23,9 @@ public class Btn_Hit : MonoBehaviour
     {
         myFX.PlayOneShot(clickFX);
     }
-    // Update is called once per frame
-    void Update()
+
+    public void Quit()
     {
-        //OverSound();
-        //ClickSound();
-    }
-    public void OnSelect(BaseEventData eventData)
-    {
-        switch (id)
-        {
-            case 0:OverSound();
-                //tocar som do player
-                break;
-            case 1: ClickSound();
-                //tocar som dozoto
-                break;
-        }
+        Application.Quit();
     }
 }
