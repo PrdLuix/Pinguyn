@@ -12,7 +12,25 @@ public class Inimigo : MonoBehaviour
     private Transform tr;
     public bool acordado;
     BoxCollider2D boxCollider;
+
+    [SerializeField] float raioCirculo;
+    public Vector2 posicaoCirculo;
+
+    Collider2D[] collCircle;
     // Start is called before the first frame update
+    bool PodeAtacar()
+    {
+        collCircle = Physics2D.OverlapCircleAll(new Vector2(transform.position.x + posicaoCirculo.x, transform.position.y + posicaoCirculo.y), raioCirculo);
+        for (int i = 0; i < collCircle.Length; i++)
+        {
+            if (collCircle[i].tag == "Player")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -32,21 +50,29 @@ public class Inimigo : MonoBehaviour
     {
         if (acordado)
         {
-            if ((transform.position.x < player.transform.position.x) && turnRight == false)
+            if (PodeAtacar())
             {
-                Flip();
+                velocidade = 1.2f;
+                if ((transform.position.x < player.transform.position.x) && turnRight == false)
+                {
+                    Flip();
+                }
+                else if (transform.position.x > player.transform.position.x && turnRight)
+                {
+                    Flip();
+                }
+                if (transform.position.x < player.transform.position.x && velocidade < 0)
+                {
+                    velocidade *= -1;
+                }
+                else if (transform.position.x > player.transform.position.x && velocidade > 0)
+                {
+                    velocidade *= -1;
+                }
             }
-            else if (transform.position.x > player.transform.position.x && turnRight)
+            else
             {
-                Flip();
-            }
-            if (transform.position.x < player.transform.position.x && velocidade < 0)
-            {
-                velocidade *= -1;
-            }
-            else if (transform.position.x > player.transform.position.x && velocidade > 0)
-            {
-                velocidade *= -1;
+                velocidade = 0;
             }
         }
         if (acordado)
@@ -89,4 +115,10 @@ public class Inimigo : MonoBehaviour
             StartCoroutine(Desacordar());
         }
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(new Vector2(transform.position.x + posicaoCirculo.x, transform.position.y + posicaoCirculo.y), raioCirculo);
+    }
+
 }

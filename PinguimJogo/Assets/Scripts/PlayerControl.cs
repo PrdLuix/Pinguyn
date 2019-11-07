@@ -27,12 +27,13 @@ public class PlayerControl : MonoBehaviour
     UIManager uiManager;
     [SerializeField] GameObject bolas;
     [SerializeField] int quantBolas;
-
+    public GameObject gameOverScreen;
     //[SerializeField] bool turnRight;
-
+    public bool vivo;
     public bool TurnRight { get; set; }
     void Start()
     {
+        vivo = true;
         animPlayer = this.GetComponent<Animator>();
         TurnRight = true;
         quantBolas = 0;
@@ -78,6 +79,12 @@ public class PlayerControl : MonoBehaviour
         uiManager.VidasUpdate(vidas);
         uiManager.NeveUpdate(quantBolas);
         Animacao();
+        if(transform.position.y < -10)
+        {
+            gameOverScreen.SetActive(true);
+            vivo = false;
+            Destroy(this.gameObject);
+        }
     }
     void Flip()
     {

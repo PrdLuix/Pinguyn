@@ -12,19 +12,27 @@ public class UIManager : MonoBehaviour
 
     bool isPause;
     public Text neveText;
+    PlayerControl player;
+    public GameObject pauseScreen;
     void Pause()
     {
         Time.timeScale = 0;
+        if (player.vivo)
+        {
+            pauseScreen.SetActive(true);
+        }
     }
-    void UnPause()
+    public void UnPause()
     {
         Time.timeScale = 1;
+        pauseScreen.SetActive(false);
     }
     public void VidasUpdate(int vida)
     {
         switch (vida)
         {
             case 0:
+                player.vivo = false;
                 heartDisplay0.sprite = lives[0];
                 heartDisplay1.sprite = lives[0];
                 heartDisplay2.sprite = lives[0];
@@ -54,6 +62,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.Find("Player").GetComponent<PlayerControl>();
         isPause = false;
     }
     void Update()
