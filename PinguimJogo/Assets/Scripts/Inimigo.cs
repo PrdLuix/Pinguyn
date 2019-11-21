@@ -12,7 +12,7 @@ public class Inimigo : MonoBehaviour
     private Transform tr;
     public bool acordado;
     BoxCollider2D boxCollider;
-
+    PlayerControl playerCntrl;
     [SerializeField] float raioCirculo;
     public Vector2 posicaoCirculo;
 
@@ -33,6 +33,8 @@ public class Inimigo : MonoBehaviour
 
     void Start()
     {
+        velocidade = 0;
+        playerCntrl = GameObject.FindWithTag("Player").GetComponent<PlayerControl>();
         boxCollider = GetComponent<BoxCollider2D>();
         acordado = true;
         turnRight = false;
@@ -48,10 +50,16 @@ public class Inimigo : MonoBehaviour
     }
     void Update()
     {
-        if (acordado)
+        if (acordado && playerCntrl.vivo) 
         {
             if (PodeAtacar())
             {
+                if (transform.position.x == player.transform.position.x)
+                {
+                    velocidade = 0;
+                    turnRight = true;
+                }
+                else
                 velocidade = 1.2f;
                 if ((transform.position.x < player.transform.position.x) && turnRight == false)
                 {
@@ -69,6 +77,7 @@ public class Inimigo : MonoBehaviour
                 {
                     velocidade *= -1;
                 }
+                
             }
             else
             {
@@ -83,7 +92,6 @@ public class Inimigo : MonoBehaviour
         {
             anim.SetBool("Desmaiada", true);
         }
-
     }
     private void FixedUpdate()
     {

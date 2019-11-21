@@ -12,12 +12,11 @@ public class PlayerControl : MonoBehaviour
     public bool estaNoChao;
     public bool estaPulando;
     public int maxJump = 2;
-    bool jumping;
     public float forcaPulo;
     public float raioVchao;
     public LayerMask solido;
     public VariableJoystick variableJoystick;
-    PlayerAnimator player;
+    
     Animator animPlayer;
 
     [SerializeField] float velocidade;
@@ -41,28 +40,19 @@ public class PlayerControl : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<Transform>();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        player = GetComponent<PlayerAnimator>();
     }
     void Animacao()
     {
         animPlayer.SetBool("Walk", (movimento != 0 || variableJoystick.Horizontal != 0? true: false));
         animPlayer.SetBool("Idle", !(movimento != 0 || variableJoystick.Horizontal != 0 ? true : false));
         animPlayer.SetBool("Death", vidas <= 0 ? true : false);
-        //if (movimento != 0 || variableJoystick.Horizontal != 0)
-        //{
-        //    player.Walk();
-        //}
-        //else
-        //{
-        //    player.Idle();
-        //}
     }
     void Update()
     {
 #if UNITY_STANDALONE
 #endif
         Vector3 theScale = transform.localScale;
-        estaNoChao = Physics2D.OverlapCircle(verificaChao.position, raioVchao, solido);
+        
         if ((movimento < 0 ||variableJoystick.Horizontal < 0)&&TurnRight)
         {
             Flip();
@@ -72,10 +62,6 @@ public class PlayerControl : MonoBehaviour
             Flip();
         }
         Tiro();
-        if (estaNoChao)
-        {
-            maxJump = 2;
-        }
         uiManager.VidasUpdate(vidas);
         uiManager.NeveUpdate(quantBolas);
         Animacao();
@@ -85,6 +71,29 @@ public class PlayerControl : MonoBehaviour
             vivo = false;
             Destroy(this.gameObject);
         }
+        if (vidas < 1)
+        {
+            vivo = false;
+            StartCoroutine(Morreu());
+        }
+
+        if (Input.GetKey(KeyCode.X))
+        {
+            animPlayer.SetBool("Xaozinho", true);
+            StartCoroutine(Xaozinho());
+        }
+    }
+    public IEnumerator Xaozinho()
+    {
+        yield return new WaitForSeconds(5/6f);
+        animPlayer.SetBool("Xaozinho", false);
+
+    }
+    public IEnumerator Morreu()
+    {
+        yield return new WaitForSeconds(1f);
+        gameOverScreen.SetActive(true);
+
     }
     void Flip()
     {
@@ -93,8 +102,12 @@ public class PlayerControl : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Jump();
-        Movimentacao();
+        estaNoChao = Physics2D.OverlapCircle(verificaChao.position, raioVchao, solido);
+        if (vidas > 0)
+        {
+            Jump();
+            Movimentacao();
+        }
     }
     void Tiro()
     {
@@ -111,6 +124,13 @@ public class PlayerControl : MonoBehaviour
     }
     void Jump()
     {
+
+        if (estaNoChao)
+        {
+            estaPulando = false;
+        }
+
+
         if (Input.GetButtonDown("Jump") && estaNoChao)
         {
             rb.AddForce(tr.up * forcaPulo);
